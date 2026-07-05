@@ -1,0 +1,50 @@
+import os
+import google.generativeai as genai
+import pyttsx3
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
+
+# Configure Gemini API
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+
+# Text-to-speech engine
+engine = pyttsx3.init()
+engine.setProperty('rate', 170)  # Speaking speed
+
+# Create chatbot model
+model = genai.GenerativeModel("gemini-1.5-pro")
+
+def speak(text):
+    """Speak the given text."""
+    engine.say(text)
+    engine.runAndWait()
+
+def chatbot():
+    print("🤖 Gemini CLI Chatbot (type 'exit' to quit)\n")
+    history = []
+
+    while True:
+        user_input = input("You: ")
+        if user_input.lower() in ["exit", "quit"]:
+            print("Bot: Goodbye! 👋")
+            speak("Goodbye!")
+            break
+        
+        # Add conversation history
+        history.append({"role": "user", "parts": [user_input]})
+        
+        # Generate response
+        response = model.generate_content(history)
+        
+        # Extract response text
+        bot_reply = response.text
+        print(f"Bot: {bot_reply}")
+        speak(bot_reply)
+        
+        # Add bot's reply to history
+        history.append({"role": "model", "parts": [bot_reply]})
+
+if __name__ == "__main__":
+    chatbot()
