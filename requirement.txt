@@ -1,0 +1,10 @@
+Python 3.x
+Google Gemini AI API
+SpeechRecognition
+pyttsx3
+Vosk Offline Speech Model
+Requests
+PyWhatKit
+Wikipedia
+SMTP (Email)
+Natural Language Processing (NLP)
